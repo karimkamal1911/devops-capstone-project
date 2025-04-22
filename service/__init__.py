@@ -8,9 +8,11 @@ import sys
 from flask import Flask
 from service import config
 from service.common import log_handlers
+from flask_talisman import Talisman
 
 # Create Flask application
 app = Flask(__name__)
+talisman = Talisman(app)
 app.config.from_object(config)
 
 # Import the routes After the Flask app is created
@@ -29,7 +31,7 @@ app.logger.info(70 * "*")
 
 try:
     models.init_db(app)  # make our database tables
-except Exception as error:  # pylint: disable=broad-except
+except Exception as error:  # pragma: no cover
     app.logger.critical("%s: Cannot continue", error)
     # gunicorn requires exit code 4 to stop spawning workers when they die
     sys.exit(4)
