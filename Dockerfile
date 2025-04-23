@@ -1,4 +1,4 @@
-ROM python:3.9-slim
+FROM python:3.9-slim
 # Create working folder and install dependencies
 WORKDIR /app
 COPY requirements.txt .
