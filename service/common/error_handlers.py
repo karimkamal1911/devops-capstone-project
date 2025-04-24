@@ -12,20 +12,18 @@ from . import status
 ######################################################################
 @app.errorhandler(DataValidationError)
 def request_validation_error(error):
-    """Handle data validation errors"""
+    """Handles Value Errors from bad data"""
     return bad_request(error)
 
 
 @app.errorhandler(status.HTTP_400_BAD_REQUEST)
 def bad_request(error):
-    """Handle bad requests (400 Bad Request)"""
+    """Handles bad requests with 400_BAD_REQUEST"""
     message = str(error)
-    app.logger.warning(f"400 Bad Request: {message}")
+    app.logger.warning(message)
     return (
         jsonify(
-            status=status.HTTP_400_BAD_REQUEST,
-            error="Bad Request",
-            message=message,
+            status=status.HTTP_400_BAD_REQUEST, error="Bad Request", message=message
         ),
         status.HTTP_400_BAD_REQUEST,
     )
@@ -33,54 +31,50 @@ def bad_request(error):
 
 @app.errorhandler(status.HTTP_404_NOT_FOUND)
 def not_found(error):
-    """Handle not found errors (404 Not Found)"""
+    """Handles resources not found with 404_NOT_FOUND"""
     message = str(error)
-    app.logger.warning(f"404 Not Found: {message}")
+    app.logger.warning(message)
     return (
-        jsonify(
-            status=status.HTTP_404_NOT_FOUND,
-            error="Not Found",
-            message=message,
-        ),
+        jsonify(status=status.HTTP_404_NOT_FOUND, error="Not Found", message=message),
         status.HTTP_404_NOT_FOUND,
     )
 
 
-@app.errorhandler(status.HTTP_405_METHOD_NOT_ALLOWED)  # pragma: no cover
-def method_not_supported(error):  # pragma: no cover
-    """Handle method not allowed errors (405 Method Not Allowed)"""
+@app.errorhandler(status.HTTP_405_METHOD_NOT_ALLOWED)
+def method_not_supported(error):
+    """Handles unsupported HTTP methods with 405_METHOD_NOT_SUPPORTED"""
     message = str(error)
-    app.logger.warning(f"405 Method Not Allowed: {message}")
+    app.logger.warning(message)
     return (
         jsonify(
             status=status.HTTP_405_METHOD_NOT_ALLOWED,
-            error="Method Not Allowed",
+            error="Method not Allowed",
             message=message,
         ),
         status.HTTP_405_METHOD_NOT_ALLOWED,
     )
 
 
-@app.errorhandler(status.HTTP_415_UNSUPPORTED_MEDIA_TYPE)  # pragma: no cover
-def mediatype_not_supported(error):  # pragma: no cover
-    """Handle unsupported media type errors (415 Unsupported Media Type)"""
+@app.errorhandler(status.HTTP_415_UNSUPPORTED_MEDIA_TYPE)
+def mediatype_not_supported(error):
+    """Handles unsupported media requests with 415_UNSUPPORTED_MEDIA_TYPE"""
     message = str(error)
-    app.logger.warning(f"415 Unsupported Media Type: {message}")
+    app.logger.warning(message)
     return (
         jsonify(
             status=status.HTTP_415_UNSUPPORTED_MEDIA_TYPE,
-            error="Unsupported Media Type",
+            error="Unsupported media type",
             message=message,
         ),
         status.HTTP_415_UNSUPPORTED_MEDIA_TYPE,
     )
 
 
-@app.errorhandler(status.HTTP_500_INTERNAL_SERVER_ERROR)  # pragma: no cover
-def internal_server_error(error):  # pragma: no cover
-    """Handle internal server errors (500 Internal Server Error)"""
+@app.errorhandler(status.HTTP_500_INTERNAL_SERVER_ERROR)
+def internal_server_error(error):
+    """Handles unexpected server error with 500_SERVER_ERROR"""
     message = str(error)
-    app.logger.error(f"500 Internal Server Error: {message}")
+    app.logger.error(message)
     return (
         jsonify(
             status=status.HTTP_500_INTERNAL_SERVER_ERROR,
